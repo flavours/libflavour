@@ -1,0 +1,17 @@
+version: 0.1
+
+install: 
+  package: django==1.11.20.4
+
+meta:
+  name: django-divio
+  version: 0.1
+
+config: 
+  languages:
+    label: Languages
+    required: True
+    type: "scalar/string"
+    default: "en,de"
+    helptext: "WARNING: this field is auto-written. Please do not change it here."
+  

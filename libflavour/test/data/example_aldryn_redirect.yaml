@@ -1,0 +1,7 @@
+version: 0.1
+meta:
+  name: addons/aldryn-redirects
+  version: 1.2.0
+install:
+  package: https://control.local.aldryn.net/api/v1/apps/serve/aldryn-redirects/1.2.0/016961ce-f080-4c37-84f0-2f78880fb2d9/aldryn-redirects-1.2.0.zip
+  installed_addons: aldryn_redirects

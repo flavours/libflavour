@@ -1,0 +1,52 @@
+version: 0.1
+install: 
+  package: django==1.11.20.4
+meta:
+  name: django-divio
+  version: 0.1
+
+config: 
+  languages: # list(str())
+    label: Languages
+    required: True
+    type: "scalar/string"
+    default: "en,de"
+    helptext: "WARNING: this field is auto-written. Please do not change it here."
+  use_manifeststaticfilesstorage:
+    label: "Hash static file names"
+    required: False
+    type: "scalar/boolean"
+    default: False
+    helptext: >
+      Use ManifestStaticFilesStorage to manage static files and set
+      far-expiry headers. Enabling this option disables autosync for
+      static files, and can cause deployment and/or 500 errors if a
+      referenced file is missing. Please ensure that your test server
+      works with this option enabled before deploying it to the live
+      site.'
+  enable_gis:
+    label: 'Enable django.contrib.gis'
+    required: False
+    type: "scalar/boolean"
+    default: False
+    helptext: >
+      Enable Geodjango (django.contrib.gis) related functionality.\n
+      WARNING: Requires postgis (contact support to enable it for your
+      project). For local development change "postgres:9.4" to
+      "mdillon/postgis:9.4" in docker-compose.yml and run
+      "aldryn project up" to re-create the db container.
+  disable_default_language_prefix:
+    label: 'Remove URL language prefix for default language'
+    required: False
+    type: "scalar/boolean"
+    default: False
+    helptext: >
+      For example, http://example.com/ rather than
+      http://example.com/en/ if en (English) is the default language.
+  session_timeout:
+    label: 'Timeout for users session, in seconds.'
+    required: False
+    type: "scalar/int"
+    default: 1209600 # (60 * 60 * 24 * 7 * 2)
+    helptext: "By default it's two weeks (Django default)."
+    min: 1

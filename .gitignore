@@ -1,0 +1,15 @@
+*.py[cod]
+*~
+*.mpy
+/main.py
+/settings.py
+/boot.py
+MANIFEST
+__pycache__
+*.egg-info
+dist/
+app/
+docs/_build
+*.bin
+build/
+.mypy_cache
