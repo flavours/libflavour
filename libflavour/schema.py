@@ -23,6 +23,7 @@ schema_project = Map(
             Map(
                 {
                     "manager": Str(),
+                    "hash": Str(),
                     Optional("settings"): MapPattern(Str(), Any(), minimum_keys=1),
                 }
             ),

@@ -11,12 +11,14 @@ services:
 addons:
   addon_example_1:
     manager: fam-python
+    hash: abcd
     settings:
       somevalue: 123
       someothervalue: 123
       database: database1
   addon_example_2:
     manager: fam-diviocloud-addon
+    hash: abcd
 
 config: 
   languages:

@@ -31,6 +31,7 @@ yaml_example_files_addons = [
             "addon_example_1": OrderedDict(
                 [
                     ("manager", "fam-python"),
+                    ("hash", "abcd"),
                     (
                         "settings",
                         OrderedDict(
@@ -43,7 +44,7 @@ yaml_example_files_addons = [
                     ),
                 ]
             ),
-            "addon_example_2": OrderedDict([("manager", "fam-diviocloud-addon")]),
+            "addon_example_2": OrderedDict([("manager", "fam-diviocloud-addon"),("hash", "abcd")]),
         },
     )
 ]
