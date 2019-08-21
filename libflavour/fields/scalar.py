@@ -14,15 +14,17 @@ class IntegerField(BaseField):
         return f"{self.label} - Integer - {self.visibility} "
 
     @classmethod
-    def additional_schema(cls):
-        return {
+    def schema(cls):
+        return Map({
+            **super().schema()._validator,
             Optional("default"): Int(),
             Optional("min"): Int(),
             Optional("max"): Int(),
-        }
+        })
 
-    def additional_data(self):
-        return {"min": self.min, "max": self.max}
+    @property
+    def data(self):
+        return {**super().data, "min": self.min, "max": self.max}
 
 
 @attr.s
@@ -33,8 +35,8 @@ class StringField(BaseField):
         return f"{self.label} - String - {self.visibility} "
 
     @classmethod
-    def additional_schema(cls):
-        return {Optional("default"): Str()}
+    def schema(cls):
+        return Map({**super().schema()._validator, Optional("default"): Str()})
 
 
 @attr.s
@@ -45,5 +47,5 @@ class BooleanField(BaseField):
         return f"{self.label} - Boolean - {self.visibility}"
 
     @classmethod
-    def additional_schema(cls):
-        return {Optional("default"): Bool()}
+    def schema(cls):
+        return Map({**super().schema()._validator, Optional("default"): Bool()})

@@ -24,18 +24,8 @@ class BaseField:
             Optional("readonly"): Bool(),
         }
 
-        return Map({**basic_schema, **cls.additional_schema()})
+        return Map(basic_schema)
 
-    @classmethod
-    def additional_schema(cls):
-        """
-        At least the `default` value must be set here.
-        return {
-            "default": Str(),
-        }
-
-        """
-        raise NotImplemented
 
     @property
     def __dict__(self):
@@ -53,10 +43,8 @@ class BaseField:
             "required": self.required,
             "readonly": self.readonly,
         }
-        return {**basic_data, **self.additional_data()}
+        return basic_data
 
-    def additional_data(self):
-        return {}
 
     def transform(self, data):
         return data
