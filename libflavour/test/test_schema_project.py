@@ -21,10 +21,10 @@ yaml_example_files = [
 def test_validate_example_addon(yaml_filename, valid):
     with Path(yaml_filename).open() as f:
         if valid:
-            yaml_data = strictyaml.load(f.read(), libflavour.schema.schema_project)
+            yaml_data = libflavour.Application(f.read())
         else:
             with pytest.raises(strictyaml.exceptions.YAMLValidationError):
-                yaml_data = strictyaml.load(f.read(), libflavour.schema.schema_project)
+                yaml_data = libflavour.Application(f.read())
 
 
 """

@@ -55,7 +55,7 @@ class Addon:
         return addon_json
 
 
-class Project:
+class Application:
     yaml = None
     _data = None
     config = None
