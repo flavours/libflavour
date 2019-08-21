@@ -35,16 +35,14 @@ class Addon:
         """
         return self._data.data
 
-
     @property
     def config(self) -> list:
         """
         returns a list of widgets for the configuration
         """
         if "config" not in self.data:
-             return []
+            return []
         return FieldFactory().load(self.data["config"])
-
 
     @property
     def config_json(self) -> list:
@@ -56,8 +54,6 @@ class Addon:
             addon_json.append(widget.data)
         return addon_json
 
-    
-    
 
 class Project:
     yaml = None
