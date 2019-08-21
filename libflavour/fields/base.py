@@ -26,7 +26,6 @@ class BaseField:
 
         return Map(basic_schema)
 
-
     @property
     def __dict__(self):
         return self.data
@@ -44,7 +43,6 @@ class BaseField:
             "readonly": self.readonly,
         }
         return basic_data
-
 
     def transform(self, data):
         return data

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+import strictyaml
 
 import libflavour
 
@@ -49,14 +50,14 @@ yaml_example_files_data = [
 def test_validate_example_addon(yaml_filename, valid):
     with Path(yaml_filename).open() as f:
         if valid:
-            libflavour.load_addon(f.read())
+            libflavour.Addon(f.read())
         else:
-            with pytest.raises(libflavour.exceptions.ValidationException):
-                libflavour.load_addon(f.read())
+            with pytest.raises(strictyaml.exceptions.YAMLValidationError):
+                libflavour.Addon(f.read())
 
 
 @pytest.mark.parametrize("yaml_filename, data", yaml_example_files_data)
 def test_data_function(yaml_filename, data):
     with Path(yaml_filename).open() as f:
-        fields = libflavour.load_addon(f.read())
-        assert fields[0].data == data
+        addon = libflavour.Addon(f.read())
+        assert addon.config[0].data == data

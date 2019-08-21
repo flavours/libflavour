@@ -2,8 +2,11 @@ from pathlib import Path
 
 import pytest
 
+import strictyaml
+
 import libflavour
 from collections import OrderedDict
+
 
 yaml_example_files = [
     ("libflavour/test/data/example_project.yaml", True),
@@ -18,12 +21,13 @@ yaml_example_files = [
 def test_validate_example_addon(yaml_filename, valid):
     with Path(yaml_filename).open() as f:
         if valid:
-            libflavour.load_project(f.read())
+            yaml_data = strictyaml.load(f.read(), libflavour.schema.schema_project)
         else:
-            with pytest.raises(libflavour.exceptions.ValidationException):
-                libflavour.load_project(f.read())
+            with pytest.raises(strictyaml.exceptions.YAMLValidationError):
+                yaml_data = strictyaml.load(f.read(), libflavour.schema.schema_project)
 
 
+"""
 yaml_example_files_addons = [
     (
         "libflavour/test/data/example_project.yaml",
@@ -48,10 +52,4 @@ yaml_example_files_addons = [
         },
     )
 ]
-
-
-@pytest.mark.parametrize("yaml_filename, addons", yaml_example_files_addons)
-def test_get_addons_from_project(yaml_filename, addons):
-    with Path(yaml_filename).open() as f:
-        read_addons = libflavour.get_addons(f.read())
-        assert read_addons == addons
+"""

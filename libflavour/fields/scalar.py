@@ -15,12 +15,14 @@ class IntegerField(BaseField):
 
     @classmethod
     def schema(cls):
-        return Map({
-            **super().schema()._validator,
-            Optional("default"): Int(),
-            Optional("min"): Int(),
-            Optional("max"): Int(),
-        })
+        return Map(
+            {
+                **super().schema()._validator,
+                Optional("default"): Int(),
+                Optional("min"): Int(),
+                Optional("max"): Int(),
+            }
+        )
 
     @property
     def data(self):

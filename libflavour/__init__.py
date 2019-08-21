@@ -5,79 +5,33 @@ __url__ = "https://www.divio.com"
 
 import strictyaml
 
-from .exceptions import ValidationException
 from .fields import FieldFactory
 from .schema import schema_addon, schema_project
+from .utils import get_schema_for_type_identifier
 
 
-def get_fields_schemas():
-    widgets = FieldFactory().get_widgets()
-    widget_schema = None
-    for widget in widgets:
-        if not widget_schema:
-            widget_schema = widgets[widget].schema()
-            continue
-        widget_schema |= widgets[widget].schema()
-    return widget_schema
+class Addon:
+    yaml = None
+    _data = None
+    config = None
 
+    def __init__(self, yaml: str) -> None:
+        self.yaml = yaml
+        self._data = strictyaml.load(yaml, schema_addon)
 
-def get_schema_for_type(type):
-    widgets = FieldFactory().get_widgets()
-    for widget in widgets:
-        if widgets[widget].identifier == type:
-            return widgets[widget].schema()
-
-
-def load_addon(yaml_string):
-    try:
-        yaml_data = strictyaml.load(yaml_string, schema_addon)
-
-        if "config" in yaml_data.data:
-            for widget in yaml_data.data["config"]:
-                yaml_data["config"][widget].revalidate(
-                    get_schema_for_type(yaml_data.data["config"][widget]["type"])
+        # Dynamically validate the configuration part of the yaml
+        if "config" in self._data.data:
+            for widget in self._data.data["config"]:
+                self._data["config"][widget].revalidate(
+                    get_schema_for_type_identifier(
+                        self._data.data["config"][widget]["type"]
+                    )
                 )
 
-        ff = FieldFactory()
-        return ff.load(yaml_data.data)
+            # If all is valid, generate the classes for the configuration
+            ff = FieldFactory()
+            self.config = ff.load(self._data.data["config"])
 
-    except strictyaml.exceptions.YAMLValidationError:
-        raise ValidationException
-
-
-def load_project(yaml_string):
-    try:
-        yaml_data = strictyaml.load(yaml_string, schema_project)
-
-        if "config" in yaml_data.data:
-            for widget in yaml_data.data["config"]:
-                yaml_data["config"][widget].revalidate(
-                    get_schema_for_type(yaml_data.data["config"][widget]["type"])
-                )
-
-        ff = FieldFactory()
-        return {
-            "name": getattr(getattr(yaml_data.data, "meta", None), "name", None),
-            "addons": getattr(yaml_data.data, "addons", []),
-            "services": getattr(yaml_data.data, "services", None),
-            "form": ff.load(yaml_data.data),
-        }
-
-    except strictyaml.exceptions.YAMLValidationError:
-        raise ValidationException
-
-
-def get_addons(yaml_string):
-    """
-    returns the addons information of a project, including settings
-    """
-    try:
-        yaml_data = strictyaml.load(yaml_string, schema_project)
-        addons = {}
-        if "addons" in yaml_data.data:
-            for addon in yaml_data.data["addons"]:
-                addons[addon] = yaml_data.data["addons"][addon]
-        return addons
-
-    except strictyaml.exceptions.YAMLValidationError:
-        raise ValidationException
+    @property
+    def data(self) -> dict:
+        return self._data.data
