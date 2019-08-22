@@ -10,14 +10,17 @@ from .schema import schema_addon, schema_project
 from .utils import get_schema_for_type_identifier
 
 
-class Addon:
+class FlavourEntity:
+    schema = None  # Overwritten in the childs
     yaml = None
     _data = None
     _config = None
+    name = None
+    version = None
 
     def __init__(self, yaml: str) -> None:
         self.yaml = yaml
-        self._data = strictyaml.load(yaml, schema_addon)
+        self._data = strictyaml.load(yaml, self.schema)
 
         # Dynamically validate the configuration part of the yaml
         if "config" in self._data.data:
@@ -27,6 +30,12 @@ class Addon:
                         self._data.data["config"][widget]["type"]
                     )
                 )
+
+        if "meta" in self._data.data:
+            if "name" in self._data.data["meta"]:
+                self.name = self._data.data["meta"]["name"]
+            if "version" in self._data.data["meta"]:
+                self.version = self._data.data["meta"]["version"]
 
     @property
     def data(self) -> dict:
@@ -42,7 +51,7 @@ class Addon:
         """
         if "config" not in self.data:
             return []
-        return FieldFactory().load(self.data["config"])
+        return FieldFactory().load(self)
 
     @property
     def config_json(self) -> list:
@@ -55,28 +64,9 @@ class Addon:
         return addon_json
 
 
-class Application:
-    yaml = None
-    _data = None
-    config = None
+class Addon(FlavourEntity):
+    schema = schema_addon
 
-    def __init__(self, yaml: str) -> None:
-        self.yaml = yaml
-        self._data = strictyaml.load(yaml, schema_project)
 
-        # Dynamically validate the configuration part of the yaml
-        if "config" in self._data.data:
-            for widget in self._data.data["config"]:
-                self._data["config"][widget].revalidate(
-                    get_schema_for_type_identifier(
-                        self._data.data["config"][widget]["type"]
-                    )
-                )
-
-            # If all is valid, generate the classes for the configuration
-            ff = FieldFactory()
-            self.config = ff.load(self._data.data["config"])
-
-    @property
-    def data(self) -> dict:
-        return self._data.data
+class Application(FlavourEntity):
+    schema = schema_project

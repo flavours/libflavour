@@ -13,3 +13,4 @@ config:
     default: 3
     helptext: "helptext"
     min: 4
+    variable: "SOME_OTHER_NAME"

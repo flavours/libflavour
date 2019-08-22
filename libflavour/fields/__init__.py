@@ -17,13 +17,19 @@ class FieldFactory:
     def get_widgets(self):
         return self.widgets
 
-    def load(self, data):
+    def load(self, flavour_entity):
         """
         expects a list of addons with the underlying addon structure
         """
         ret = []
-        for addon_name in data:
-            widget_class = self.widgets[data[addon_name]["type"]]
-            widget = widget_class(name=addon_name, **data[addon_name])
+        for addon_name in flavour_entity.data["config"]:
+            widget_class = self.widgets[
+                flavour_entity.data["config"][addon_name]["type"]
+            ]
+            widget = widget_class(
+                name=addon_name,
+                parent=flavour_entity,
+                **flavour_entity.data["config"][addon_name]
+            )
             ret.append(widget)
         return ret
