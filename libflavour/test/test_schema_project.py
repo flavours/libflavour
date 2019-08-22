@@ -1,11 +1,8 @@
 from pathlib import Path
 
-import pytest
-
-import strictyaml
-
 import libflavour
-from collections import OrderedDict
+import pytest
+import strictyaml
 
 
 yaml_example_files = [
@@ -21,10 +18,10 @@ yaml_example_files = [
 def test_validate_example_addon(yaml_filename, valid):
     with Path(yaml_filename).open() as f:
         if valid:
-            yaml_data = libflavour.Application(f.read())
+            libflavour.Application(f.read())
         else:
             with pytest.raises(strictyaml.exceptions.YAMLValidationError):
-                yaml_data = libflavour.Application(f.read())
+                libflavour.Application(f.read())
 
 
 """

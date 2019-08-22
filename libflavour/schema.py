@@ -1,6 +1,4 @@
-from strictyaml import Any, Map, MapPattern, Optional, Seq, Str
-
-from libflavour.fields import FieldFactory
+from strictyaml import Any, Map, MapPattern, Optional, Str
 
 
 schema_addon = Map(
@@ -16,7 +14,9 @@ schema_addon = Map(
 schema_project = Map(
     {
         "version": Str(),
-        Optional("meta"): Map({Optional("name"): Str(), Optional("version"): Str()}),
+        Optional("meta"): Map(
+            {Optional("name"): Str(), Optional("version"): Str()}
+        ),
         Optional("services"): MapPattern(Str(), Map({"type": Str()})),
         Optional("addons"): MapPattern(
             Str(),
@@ -24,7 +24,9 @@ schema_project = Map(
                 {
                     "manager": Str(),
                     "hash": Str(),
-                    Optional("settings"): MapPattern(Str(), Any(), minimum_keys=1),
+                    Optional("settings"): MapPattern(
+                        Str(), Any(), minimum_keys=1
+                    ),
                 }
             ),
             minimum_keys=1,

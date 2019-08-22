@@ -1,6 +1,3 @@
-import attr
-from strictyaml import Map, Optional, Str
-
 from .scalar import BooleanField, IntegerField, StringField
 from .service import DatabaseField
 

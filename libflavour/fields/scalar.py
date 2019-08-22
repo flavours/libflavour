@@ -1,4 +1,5 @@
 import attr
+
 from strictyaml import Bool, Int, Map, Optional, Str
 
 from .base import BaseField
@@ -50,4 +51,6 @@ class BooleanField(BaseField):
 
     @classmethod
     def schema(cls):
-        return Map({**super().schema()._validator, Optional("default"): Bool()})
+        return Map(
+            {**super().schema()._validator, Optional("default"): Bool()}
+        )

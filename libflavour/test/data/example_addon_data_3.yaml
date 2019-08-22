@@ -1,0 +1,18 @@
+version: 0.1
+meta:
+  name: django-divio
+  version: 0.1
+install: 
+  package: django==1.11.20.4
+
+config: 
+  languages:
+    label: Languages
+    type: "scalar/string"
+    default: "default"
+    helptext: "helptext"
+  otherlanguages:
+    label: Languages
+    type: "scalar/string"
+    helptext: "helptext"
+    required: False

@@ -1,5 +1,6 @@
 import attr
-from strictyaml import Bool, Int, Map, Optional, Str
+
+from strictyaml import Bool, Optional
 
 from .base import BaseField
 

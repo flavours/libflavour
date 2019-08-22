@@ -14,7 +14,7 @@ class FlavourEntity:
     schema = None  # Overwritten in the childs
     yaml = None
     _data = None
-    _config = None
+    fields = []
     name = None
     version = None
 
@@ -31,6 +31,8 @@ class FlavourEntity:
                     )
                 )
 
+            self.fields = FieldFactory().load(self)
+
         if "meta" in self._data.data:
             if "name" in self._data.data["meta"]:
                 self.name = self._data.data["meta"]["name"]
@@ -45,23 +47,38 @@ class FlavourEntity:
         return self._data.data
 
     @property
-    def config(self) -> list:
-        """
-        returns a list of widgets for the configuration
-        """
-        if "config" not in self.data:
-            return []
-        return FieldFactory().load(self)
-
-    @property
-    def config_json(self) -> list:
+    def fields_json(self) -> list:
         """
         returns the config
         """
         addon_json = []
-        for widget in self.config:
-            addon_json.append(widget.data)
+        for field in self.fields:
+            addon_json.append(field.data)
         return addon_json
+
+    def update_fields(self, data: dict) -> None:
+        """
+        accepts a dictionary
+        {
+            "VARIABLE_NAME": "VALUE",
+            "VARIABLE_NAME2": "OTHERVLAUE"
+        }
+        """
+
+        for variable_name in data:
+            for field in self.fields:
+                if field.variable == variable_name:
+                    field.value = data[variable_name]
+                    break
+
+    def validate(self) -> None:
+        errors = {}
+        for field in self.fields:
+            try:
+                field.validate()
+            except Exception as e:
+                errors[field.name] = e.msg
+        return errors
 
 
 class Addon(FlavourEntity):

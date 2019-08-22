@@ -1,9 +1,8 @@
 from pathlib import Path
 
+import libflavour
 import pytest
 import strictyaml
-
-import libflavour
 
 
 yaml_example_files = [
@@ -27,6 +26,7 @@ yaml_example_files_data = [
             "visibility": 0,
             "readonly": False,
             "required": True,
+            "value": "default",
         },
     ),
     (
@@ -43,6 +43,7 @@ yaml_example_files_data = [
             "required": True,
             "min": 4,
             "max": None,
+            "value": 3,
         },
     ),
 ]
@@ -62,4 +63,4 @@ def test_validate_example_addon(yaml_filename, valid):
 def test_data_function(yaml_filename, data):
     with Path(yaml_filename).open() as f:
         addon = libflavour.Addon(f.read())
-        assert addon.config[0].data == data
+        assert addon.fields[0].data == data
