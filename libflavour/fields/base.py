@@ -1,8 +1,9 @@
 import attr
 
+from libflavour.exceptions import ValidationError
 from slugify import slugify
 from strictyaml import Bool, Int, Map, Optional, Str
-from libflavour.exceptions import ValidationError
+
 
 NOT_SET = object()
 
