@@ -40,7 +40,7 @@ class IntegerField(BaseField):
 
         if self.min and self.value < self.min:
             raise ValidationError("Value is lower than the minimum value")
-        if self.max and self.value > self.min:
+        if self.max and self.value > self.max:
             raise ValidationError("Value is higher than the maximum value")
 
  
