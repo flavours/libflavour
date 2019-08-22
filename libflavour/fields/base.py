@@ -2,9 +2,9 @@ import attr
 
 from slugify import slugify
 from strictyaml import Bool, Int, Map, Optional, Str
+from libflavour.exceptions import ValidationError
 
-
-NOT_SET = "NOTSET"
+NOT_SET = object()
 
 
 @attr.s
@@ -66,8 +66,8 @@ class BaseField:
         if self._value == NOT_SET:
             if self.default == NOT_SET:
                 if self.required:
-                    raise Exception(
-                        f"{self.name}o value defined and no default"
+                    raise ValueError(
+                        f"{self.name} value defined and no default"
                     )
                 else:
                     return None
@@ -104,4 +104,7 @@ class BaseField:
 
     def validate(self):
         # check if the value, default required combination is correct
-        self.value
+        try:
+            self.value
+        except ValueError as e:
+            raise ValidationError(str(e))

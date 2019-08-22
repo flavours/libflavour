@@ -3,7 +3,7 @@ import attr
 from strictyaml import Bool, Int, Map, Optional, Str
 
 from .base import BaseField
-
+from libflavour.exceptions import ValidationError
 
 @attr.s
 class IntegerField(BaseField):
@@ -29,6 +29,22 @@ class IntegerField(BaseField):
     def data(self):
         return {**super().data, "min": self.min, "max": self.max}
 
+
+    def validate(self):
+        super().validate()
+        # check if we can int cast it
+        try:
+            int(self.value)
+        except ValueError:
+            raise ValidationError("Not a integer")
+
+        if self.min and self.value < self.min:
+            raise ValidationError("Value is lower than the minimum value")
+        if self.max and self.value > self.min:
+            raise ValidationError("Value is higher than the maximum value")
+
+ 
+        
 
 @attr.s
 class StringField(BaseField):

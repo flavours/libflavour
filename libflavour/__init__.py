@@ -56,7 +56,7 @@ class FlavourEntity:
             addon_json.append(field.data)
         return addon_json
 
-    def update_fields(self, data: dict) -> None:
+    def update_values(self, data: dict) -> None:
         """
         accepts a dictionary
         {
@@ -77,7 +77,7 @@ class FlavourEntity:
             try:
                 field.validate()
             except Exception as e:
-                errors[field.name] = e.msg
+                errors[field.name] = str(e)
         return errors
 
 
