@@ -10,7 +10,7 @@ from .base import BaseField
 class IntegerField(BaseField):
     min = attr.ib(kw_only=True, default=None)
     max = attr.ib(kw_only=True, default=None)
-    identifier = "scalar/int"
+    identifier = "scalar/integer"
 
     def __str__(self):
         return f"{self.label} - Integer - {self.visibility} "
