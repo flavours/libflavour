@@ -1,7 +1,7 @@
 from strictyaml import Any, Map, MapPattern, Optional, Str
 
 
-schema_addon = Map(
+addon = Map(
     {
         "version": Str(),
         Optional("install"): MapPattern(Str(), Any(), minimum_keys=1),
@@ -11,7 +11,7 @@ schema_addon = Map(
 )
 
 
-schema_project = Map(
+application = Map(
     {
         "version": Str(),
         Optional("meta"): Map(

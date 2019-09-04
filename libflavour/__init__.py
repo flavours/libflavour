@@ -1,12 +1,12 @@
 __author__ = "Divio AG"
 __email__ = "dennis.schwertel@divio.ch"
-__version__ = "0.0.12"
+__version__ = "0.0.13"
 __url__ = "https://www.divio.com"
 
 import strictyaml
 
+from . import schema
 from .fields import FieldFactory
-from .schema import schema_addon, schema_project
 from .utils import get_schema_for_type_identifier
 
 
@@ -82,8 +82,8 @@ class FlavourEntity:
 
 
 class Addon(FlavourEntity):
-    schema = schema_addon
+    schema = schema.addon
 
 
 class Application(FlavourEntity):
-    schema = schema_project
+    schema = schema.application

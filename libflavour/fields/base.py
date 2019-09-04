@@ -64,8 +64,8 @@ class BaseField:
 
     @property
     def value(self):
-        if self._value == NOT_SET:
-            if self.default == NOT_SET:
+        if self._value is NOT_SET:
+            if self.default is NOT_SET:
                 if self.required:
                     raise ValueError(
                         f"{self.name} value defined and no default"
@@ -99,7 +99,7 @@ class BaseField:
             "readonly": self.readonly,
             "value": self.value,
         }
-        if not self.default == NOT_SET:
+        if self.default is not NOT_SET:
             basic_data["default"] = self.default
         return basic_data
 
