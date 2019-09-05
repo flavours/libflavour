@@ -32,7 +32,7 @@ yaml_example_files_data = [
     (
         "libflavour/test/data/example_addon_data_2.yaml",
         {
-            "type": "scalar/int",
+            "type": "scalar/integer",
             "name": "languages",
             "label": "Languages",
             "helptext": "helptext",

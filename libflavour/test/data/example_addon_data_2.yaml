@@ -9,7 +9,7 @@ config:
   languages:
     label: Languages
     required: True
-    type: "scalar/int"
+    type: "scalar/integer"
     default: 3
     helptext: "helptext"
     min: 4

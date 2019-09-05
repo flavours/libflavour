@@ -46,7 +46,7 @@ config:
   session_timeout:
     label: 'Timeout for users session, in seconds.'
     required: False
-    type: "scalar/int"
+    type: "scalar/integer"
     default: 1209600 # (60 * 60 * 24 * 7 * 2)
     helptext: "By default it's two weeks (Django default)."
     min: 1
