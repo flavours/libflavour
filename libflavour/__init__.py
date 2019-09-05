@@ -69,7 +69,22 @@ class FlavourEntity:
             if field.variable in data:
                 field.value = data[field.variable]
 
-    def validate(self) -> None:
+    def get_values(self) -> dict:
+        """
+        returns the current values of all fields as a dictionary, inverse
+        of update_values
+        {
+            "VARIABLE_NAME": "VALUE",
+            "VARIABLE_NAME2": "OTHERVLAUE"
+        }
+        """
+        return {
+            field.variable: field.value
+            for field in self.fields
+            if field.value is not None
+        }
+
+    def validate(self) -> dict:
         errors = {}
         for field in self.fields:
             try:

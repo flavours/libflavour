@@ -108,3 +108,39 @@ def test_update_data_2(yaml_filename, data, update_values):
         addon.validate() == {}
         addon.update_values(update_values)
         addon.validate() == {"languages": "Not a integer"}
+
+
+get_values_test_data = [
+    (
+        "libflavour/test/data/example_addon_data_2.yaml",
+        {},
+        {"SOME_OTHER_NAME": 3},
+    ),
+    (
+        "libflavour/test/data/example_addon_data_2.yaml",
+        {"languages": 47},
+        {"SOME_OTHER_NAME": 47},
+    ),
+    (
+        "libflavour/test/data/example_addon_data_3.yaml",
+        {},
+        {"DJANGO_DIVIO_LANGUAGES": "default"},
+    ),
+    (
+        "libflavour/test/data/example_addon_data_3.yaml",
+        {"languages": "it", "otherlanguages": "en"},
+        {"DJANGO_DIVIO_LANGUAGES": "it", "DJANGO_DIVIO_OTHERLANGUAGES": "en"},
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "yaml_filename, data, expected_values", get_values_test_data
+)
+def test_get_values(yaml_filename, data, expected_values):
+    yaml_text = Path(yaml_filename).read_text()
+    addon = libflavour.Addon(yaml_text)
+    for field in addon.fields:
+        if field.name in data:
+            field.value = data[field.name]
+    assert addon.get_values() == expected_values
