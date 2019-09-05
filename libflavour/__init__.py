@@ -65,11 +65,9 @@ class FlavourEntity:
         }
         """
 
-        for variable_name in data:
-            for field in self.fields:
-                if field.variable == variable_name:
-                    field.value = data[variable_name]
-                    break
+        for field in self.fields:
+            if field.variable in data:
+                field.value = data[field.variable]
 
     def validate(self) -> None:
         errors = {}
