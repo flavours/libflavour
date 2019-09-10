@@ -120,7 +120,7 @@ setup(
     packages=find_packages(),
     package_dir={PACKAGE: PACKAGE},
     description="libflavour - python implementation",
-    install_requires=Setup.requirements("requirements.txt"),
+    install_requires=["strictyaml", "attrs", "python-slugify"],
     long_description=Setup.longdesc(),
     classifiers=[
         "Development Status :: 4 - Beta",
