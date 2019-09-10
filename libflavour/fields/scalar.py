@@ -30,18 +30,26 @@ class IntegerField(BaseField):
     def data(self):
         return {**super().data, "min": self.min, "max": self.max}
 
+    def to_python(self, value):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            raise ValidationError(f"{value} is not an integer")
+
     def validate(self):
         super().validate()
-        # check if we can int cast it
-        try:
-            int(self.value)
-        except ValueError:
-            raise ValidationError("Not a integer")
 
-        if self.min and self.value < self.min:
-            raise ValidationError("Value is lower than the minimum value")
-        if self.max and self.value > self.max:
-            raise ValidationError("Value is higher than the maximum value")
+        if self.value is None:
+            return
+
+        if self.min is not None and self.value < self.min:
+            raise ValidationError(
+                f"{self.value} is lower than the minimum value ({self.min})"
+            )
+        if self.max is not None and self.value > self.max:
+            raise ValidationError(
+                f"{self.value} is higher than the maximum value ({self.max})"
+            )
 
 
 @attr.s
@@ -54,6 +62,9 @@ class StringField(BaseField):
     @classmethod
     def schema(cls):
         return Map({**super().schema()._validator, Optional("default"): Str()})
+
+    def to_python(self, value):
+        return str(value)
 
 
 @attr.s
@@ -68,3 +79,10 @@ class BooleanField(BaseField):
         return Map(
             {**super().schema()._validator, Optional("default"): Bool()}
         )
+
+    def to_python(self, value):
+        if str(value).lower() in ["1", "true", "yes", "y", "on"]:
+            return True
+        elif str(value).lower() in ["0", "false", "no", "n", "off"]:
+            return False
+        raise ValidationError(f"{value} is not a boolean value")

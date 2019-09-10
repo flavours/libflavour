@@ -1,0 +1,23 @@
+version: 0.1
+meta:
+  name: django-divio
+  version: 0.1
+install:
+  package: django==1.11.20.4
+
+config:
+  boolean:
+    label: Boolean field
+    type: "scalar/boolean"
+    variable: BOOL
+  positive_integer:
+    label: Positive field
+    type: "scalar/integer"
+    min: 0
+    variable: PLUS_INT
+  negative_integer:
+    label: Languages
+    type: "scalar/integer"
+    required: False
+    max: 0
+    variable: MINUS_INT
