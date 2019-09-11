@@ -1,0 +1,12 @@
+version: 0.1
+meta:
+  name: django-divio
+  version: 0.1
+install:
+  package: django==1.11.20.4
+
+config:
+  required_without_default:
+    label: Required without default
+    type: "scalar/string"
+    required: True

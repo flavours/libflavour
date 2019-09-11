@@ -18,7 +18,7 @@ yaml_example_files_data = [
                 "visibility": 0,
                 "readonly": False,
                 "required": True,
-                "value": "default",
+                "value": None,
             },
             {
                 "type": "scalar/string",
@@ -44,7 +44,7 @@ yaml_example_files_data = [
                 "visibility": 0,
                 "readonly": False,
                 "required": True,
-                "value": "default",
+                "value": None,
             },
             {
                 "type": "scalar/string",
@@ -58,7 +58,37 @@ yaml_example_files_data = [
                 "value": "it",
             },
         ],
-    )
+    ),
+    (
+        "libflavour/test/data/example_addon_data_5.yaml",
+        [
+            {
+                "type": "scalar/string",
+                "name": "required_without_default",
+                "label": "Required without default",
+                "helptext": "",
+                "variable": "DJANGO_DIVIO_REQUIRED_WITHOUT_DEFAULT",
+                "visibility": 0,
+                "readonly": False,
+                "required": True,
+                "value": None,
+            }
+        ],
+        {"DJANGO_DIVIO_REQUIRED_WITHOUT_DEFAULT": "a"},
+        [
+            {
+                "type": "scalar/string",
+                "name": "required_without_default",
+                "label": "Required without default",
+                "helptext": "",
+                "variable": "DJANGO_DIVIO_REQUIRED_WITHOUT_DEFAULT",
+                "visibility": 0,
+                "readonly": False,
+                "required": True,
+                "value": "a",
+            }
+        ],
+    ),
 ]
 
 
@@ -90,7 +120,7 @@ yaml_example_files_data_2 = [
                 "required": True,
                 "min": 4,
                 "max": None,
-                "value": 3,
+                "value": None,
             }
         ],
         {"SOME_OTHER_NAME": "it"},
@@ -114,36 +144,53 @@ get_values_test_data = [
     (
         "libflavour/test/data/example_addon_data_2.yaml",
         {},
+        {},
         {"SOME_OTHER_NAME": 3},
     ),
     (
         "libflavour/test/data/example_addon_data_2.yaml",
         {"languages": 47},
         {"SOME_OTHER_NAME": 47},
+        {"SOME_OTHER_NAME": 47},
     ),
     (
         "libflavour/test/data/example_addon_data_3.yaml",
+        {},
         {},
         {"DJANGO_DIVIO_LANGUAGES": "default"},
     ),
     (
         "libflavour/test/data/example_addon_data_3.yaml",
+        {"otherlanguages": "en"},
+        {"DJANGO_DIVIO_OTHERLANGUAGES": "en"},
+        {
+            "DJANGO_DIVIO_LANGUAGES": "default",
+            "DJANGO_DIVIO_OTHERLANGUAGES": "en",
+        },
+    ),
+    (
+        "libflavour/test/data/example_addon_data_3.yaml",
         {"languages": "it", "otherlanguages": "en"},
+        {"DJANGO_DIVIO_LANGUAGES": "it", "DJANGO_DIVIO_OTHERLANGUAGES": "en"},
         {"DJANGO_DIVIO_LANGUAGES": "it", "DJANGO_DIVIO_OTHERLANGUAGES": "en"},
     ),
 ]
 
 
 @pytest.mark.parametrize(
-    "yaml_filename, data, expected_values", get_values_test_data
+    "yaml_filename, data, expected_values, expected_with_defaults",
+    get_values_test_data,
 )
-def test_get_values(yaml_filename, data, expected_values):
+def test_get_values(
+    yaml_filename, data, expected_values, expected_with_defaults
+):
     yaml_text = Path(yaml_filename).read_text()
     addon = libflavour.Addon(yaml_text)
     for field in addon.fields:
         if field.name in data:
             field.value = data[field.name]
-    assert addon.get_values() == expected_values
+    assert addon.get_values(include_defaults=False) == expected_values
+    assert addon.get_values(include_defaults=True) == expected_with_defaults
 
 
 validation_test_data = [
