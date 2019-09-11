@@ -70,7 +70,7 @@ class FlavourEntity:
             if field.variable in data:
                 field.value = data[field.variable]
 
-    def get_values(self, include_defaults=False) -> dict:
+    def get_values(self, include_defaults: bool = False) -> dict:
         """
         returns the current values of all fields as a dictionary, inverse
         of update_values
