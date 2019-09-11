@@ -26,7 +26,7 @@ yaml_example_files_data = [
             "visibility": 0,
             "readonly": False,
             "required": True,
-            "value": "default",
+            "value": None,
         },
     ),
     (
@@ -43,7 +43,7 @@ yaml_example_files_data = [
             "required": True,
             "min": 4,
             "max": None,
-            "value": 3,
+            "value": None,
         },
     ),
 ]

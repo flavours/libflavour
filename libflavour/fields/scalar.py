@@ -3,7 +3,7 @@ import attr
 from libflavour.exceptions import ValidationError
 from strictyaml import Bool, Int, Map, Optional, Str
 
-from .base import BaseField
+from .base import NOT_SET, BaseField
 
 
 @attr.s
@@ -39,7 +39,7 @@ class IntegerField(BaseField):
     def validate(self):
         super().validate()
 
-        if self.value is None:
+        if self.value is NOT_SET:
             return
 
         if self.min is not None and self.value < self.min:

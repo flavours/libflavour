@@ -27,7 +27,7 @@ class BaseField:
         default=True
     )  # Boolean if this value must be set. There is some interaction with "default"
     readonly = attr.ib(default=False)  # Can this value be changed
-    _value = NOT_SET  # The saved value of the field, if any
+    value = attr.ib(default=NOT_SET)  # The saved value of the field, if any
 
     @classmethod
     def schema(cls):
@@ -58,28 +58,6 @@ class BaseField:
 
         return slugify("_".join(path)).upper().replace("-", "_")
 
-    @variable.setter
-    def variable(self, variable):
-        self._variable = variable
-
-    @property
-    def value(self):
-        if self._value is NOT_SET:
-            if self.default is NOT_SET:
-                if self.required:
-                    raise ValueError(f"This is a required field")
-                else:
-                    return None
-            else:
-                return self.default
-
-        else:
-            return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
     @property
     def __dict__(self):
         return self.data
@@ -95,7 +73,7 @@ class BaseField:
             "visibility": self.visibility,
             "required": self.required,
             "readonly": self.readonly,
-            "value": self.value,
+            "value": None if self.value is NOT_SET else self.value,
         }
         if self.default is not NOT_SET:
             basic_data["default"] = self.default
@@ -111,9 +89,8 @@ class BaseField:
 
     def validate(self):
         # check if the combination of value, default, and required is correct
-        try:
-            value = self.value
-        except ValueError as e:
-            raise ValidationError(str(e))
-        if value is not None:
-            self._value = self.to_python(value)
+        if self.value is NOT_SET:
+            if self.default is NOT_SET and self.required:
+                raise ValidationError("This is a required field")
+        else:
+            self.value = self.to_python(self.value)
