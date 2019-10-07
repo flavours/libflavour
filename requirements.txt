@@ -1,3 +1,0 @@
-strictyaml==1.0.0
-attrs==19.1.0
-python-slugify==1.2.2

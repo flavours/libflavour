@@ -1,12 +1,13 @@
 __author__ = "Divio AG"
 __email__ = "dennis.schwertel@divio.ch"
-__version__ = "0.0.14"
+__version__ = "0.0.16"
 __url__ = "https://www.divio.com"
 
 import strictyaml
 
 from . import schema
 from .fields import FieldFactory
+from .fields.base import NOT_SET
 from .utils import get_schema_for_type_identifier
 
 
@@ -65,13 +66,35 @@ class FlavourEntity:
         }
         """
 
-        for variable_name in data:
-            for field in self.fields:
-                if field.variable == variable_name:
-                    field.value = data[variable_name]
-                    break
+        for field in self.fields:
+            if field.variable in data:
+                field.value = data[field.variable]
 
-    def validate(self) -> None:
+    def get_values(self, include_defaults: bool = False) -> dict:
+        """
+        returns the current values of all fields as a dictionary, inverse
+        of update_values
+        {
+            "VARIABLE_NAME": "VALUE",
+            "VARIABLE_NAME2": "OTHERVLAUE"
+        }
+        """
+        explicit_values = {
+            field.variable: field.value
+            for field in self.fields
+            if field.value is not NOT_SET
+        }
+        if include_defaults:
+            default_values = {
+                field.variable: field.default
+                for field in self.fields
+                if field.default is not NOT_SET
+            }
+            default_values.update(explicit_values)
+            return default_values
+        return explicit_values
+
+    def validate(self) -> dict:
         errors = {}
         for field in self.fields:
             try:

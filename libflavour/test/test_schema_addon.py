@@ -26,13 +26,13 @@ yaml_example_files_data = [
             "visibility": 0,
             "readonly": False,
             "required": True,
-            "value": "default",
+            "value": None,
         },
     ),
     (
         "libflavour/test/data/example_addon_data_2.yaml",
         {
-            "type": "scalar/int",
+            "type": "scalar/integer",
             "name": "languages",
             "label": "Languages",
             "helptext": "helptext",
@@ -43,7 +43,7 @@ yaml_example_files_data = [
             "required": True,
             "min": 4,
             "max": None,
-            "value": 3,
+            "value": None,
         },
     ),
 ]

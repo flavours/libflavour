@@ -2,10 +2,10 @@ version: 0.1
 meta:
   name: django-divio
   version: 0.1
-install: 
+install:
   package: django==1.11.20.4
 
-config: 
+config:
   languages:
     label: Languages
     type: "scalar/string"
