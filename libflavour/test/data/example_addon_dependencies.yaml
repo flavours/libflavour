@@ -1,4 +1,4 @@
-version: 0.1
+spec: 0.1
 
 install: 
   package: django==1.11.20.4
