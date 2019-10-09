@@ -251,8 +251,8 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "5098b70fe079fe50ba85ddbf0ad4bd2743191342589f156747940f7c796c44f3"
-python-versions = "^2.7"
+content-hash = "a4daa03b6faed17eaf9ef8de6efa995a2af15b3071cf2bd6315bc9e76d800c51"
+python-versions = "*"
 
 [metadata.hashes]
 atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]

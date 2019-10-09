@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "libflavour"
-version = "0.0.17"
+version = "0.0.18"
 description = ""
 readme = "README.rst"
 authors = ["Dennis Schwertel <dennisschwertel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^2.7"
+python=">3.5"
 strictyaml = ""
 attrs = ""
 python-slugify = ""
