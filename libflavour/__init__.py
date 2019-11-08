@@ -6,6 +6,7 @@ __url__ = "https://www.divio.com"
 import strictyaml
 
 from . import schema
+from .exceptions import ValidationError
 from .fields import FieldFactory
 from .fields.base import NOT_SET
 from .utils import get_schema_for_type_identifier
@@ -21,18 +22,21 @@ class FlavourEntity:
 
     def __init__(self, yaml: str) -> None:
         self.yaml = yaml
-        self._data = strictyaml.load(yaml, self.schema)
+        try:
+            self._data = strictyaml.load(yaml, self.schema)
 
-        # Dynamically validate the configuration part of the yaml
-        if "config" in self._data.data:
-            for widget in self._data.data["config"]:
-                self._data["config"][widget].revalidate(
-                    get_schema_for_type_identifier(
-                        self._data.data["config"][widget]["type"]
+            # Dynamically validate the configuration part of the yaml
+            if "config" in self._data.data:
+                for widget in self._data.data["config"]:
+                    self._data["config"][widget].revalidate(
+                        get_schema_for_type_identifier(
+                            self._data.data["config"][widget]["type"]
+                        )
                     )
-                )
 
-            self.fields = FieldFactory().load(self)
+                self.fields = FieldFactory().load(self)
+        except strictyaml.exceptions.YAMLValidationError as e:
+            raise ValidationError(e)
 
         if "meta" in self._data.data:
             if "name" in self._data.data["meta"]:
