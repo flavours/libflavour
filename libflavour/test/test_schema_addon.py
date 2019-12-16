@@ -2,7 +2,6 @@ from pathlib import Path
 
 import libflavour
 import pytest
-import strictyaml
 
 
 yaml_example_files = [
@@ -55,7 +54,7 @@ def test_validate_example_addon(yaml_filename, valid):
         if valid:
             libflavour.Addon(f.read())
         else:
-            with pytest.raises(strictyaml.exceptions.YAMLValidationError):
+            with pytest.raises(libflavour.ValidationError):
                 libflavour.Addon(f.read())
 
 
